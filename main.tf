@@ -49,7 +49,6 @@ resource "google_compute_instance" "zfs" {
   machine_type = "e2-micro"
 
   metadata = {
-    # ssh-keys = "${var.shell_user}:ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDC2cDCGNL/bbGgdWO/TeNZNJMpR7+YC0RUmwzPQkoDkb8ObFdtC3LW25/PP4qLxHixOJkY5u9Ap6N36ZWU3tTuJKqeyVwH+HzyW5kmDUPaSJl2u05yxJYa/M/T6JA+0MifFjf4ZERATeAtd1ZHjcerAfDGn1tXIdXXe6WgeqJQHobhwkZqj3FfALux1WviS3/+Qear3LJoOpDUskM0keM6lk7X41ZDFMoEEf1CRXLfsJbUOtjuccNaazNQy02J+s3zRyJPqW34pnENQG7c/v3xgkdg801a4/vu5fsrpyYbQjcaueRiQCIDvUcmqaTR6AwDKadJb2k6Xax3LL1OHvGznndiSyQCML2pDtdnqqsUMEiiQJ2sv2ykLmPaq/6rGluqk2lpvUZrPz0aNA8TvmBZBgpMgbamcgoZ7QHJoqBp7GAjeElFs20l6ofEmcXNlSo8DXvtV5FHq4I8U/LqyhDyTwKNI7wMKWqpeM40wpwb8NMKDJw12+z7Vtc56sicQ80= ${var.shell_user}"
     ssh-keys = "${var.shell_user}:${file("zfs.pub")}"
   }
 
@@ -69,11 +68,6 @@ resource "google_compute_instance" "zfs" {
     preemptible         = false
     provisioning_model  = "STANDARD"
   }
-
-  # service_account {
-  #   email  = "271469700147-compute@developer.gserviceaccount.com"
-  #   scopes = ["https://www.googleapis.com/auth/devstorage.read_only", "https://www.googleapis.com/auth/logging.write", "https://www.googleapis.com/auth/monitoring.write", "https://www.googleapis.com/auth/service.management.readonly", "https://www.googleapis.com/auth/servicecontrol", "https://www.googleapis.com/auth/trace.append"]
-  # }
 
   shielded_instance_config {
     enable_integrity_monitoring = true
@@ -97,6 +91,6 @@ resource "google_compute_instance" "zfs" {
 
 }
 
-output "server_ip" {
+output "server_public_ip" {
   value = google_compute_instance.zfs.network_interface[0].access_config[0].nat_ip
 }
