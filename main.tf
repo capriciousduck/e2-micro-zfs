@@ -79,7 +79,8 @@ resource "google_compute_instance" "zfs" {
   project = var.project
 
   provisioner "remote-exec" {
-    inline = ["sudo apt update", "sudo apt install python3 zfsutils-linux -y", "sudo zpool create -f myzfs /dev/sdb /dev/sdc"]
+    # Disk are referenced based on the name parameter set in the "additional-disk" resource block
+    inline = ["sudo apt update", "sudo apt install python3 zfsutils-linux -y", "sudo zpool create -f myzfs /dev/google-disk-1 /dev/google-disk-2"]
 
     connection {
       host        = google_compute_instance.zfs.network_interface[0].access_config[0].nat_ip
